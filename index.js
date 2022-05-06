@@ -75,7 +75,7 @@ function render() {
 						}
 						
 						
-						ctx.shadowBlur = 100
+						ctx.shadowBlur = 120
 						ctx.shadowOffsetX = 30
 						ctx.shadowOffsetY = 30
 						ctx.shadowColor = '#000000AA'
