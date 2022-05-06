@@ -58,17 +58,24 @@ function render() {
 					let uploaded = new Image()
 					uploaded.onload=()=>{
 						let [width,height,wMult,hMult] = [0,0,1,1]
-						let ratio = uploaded.width/uploaded.height
 						
 						if(uploaded.width>uploaded.height) {
+							let ratio = uploaded.width/uploaded.height
 							wMult = WP / uploaded.width
+							width = Math.min(uploaded.width * wMult, WP)
+							height = Math.min((width/ratio) * hMult, HP)
 						} else {
+							let ratio = uploaded.height/uploaded.width
 							hMult = HP / uploaded.height
+							height = Math.min(uploaded.height * hMult, WP)
+							width = Math.min((height/ratio) * wMult, HP)
 						}
 						
-						width = Math.min(uploaded.width * hMult, WP)
-						height = Math.min((width/ratio) * hMult, HP)
 						
+						ctx.shadowBlur = 100
+						ctx.shadowOffsetX = 30
+						ctx.shadowOffsetY = 30
+						ctx.shadowColor = '#000000AA'
 						ctx.drawImage(uploaded,(w/2)-(width/2),(h/2)-(height/2),width,height)
 					}
 					uploaded.src = e.target.result
