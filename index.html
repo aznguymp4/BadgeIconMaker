@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="index.css">
+	<script defer src="index.js"></script>
+	<script defer src="https://apis.google.com/js/platform.js"></script>
+	<title>aznsite.mp4 - Badge Icon Maker</title>
+</head>
+<body>
+	<center>
+		<h2 class="title">badge icon generator thing or whatever <img src="https://aznguy.com/src/don.png" width="60"></h2>
+		<h4>i am too lazy to decorate the website but <img src="https://tetr.io/res/league-ranks/a+.png" width="30"> for dark mode</h4>
+		<div class="g-ytsubscribe" data-channelid="UCyKsgkMdgNjbGgyCNUlZtIQ" data-layout="full" data-theme="dark" data-count="default"></div>
+		<h4>🔽 image 🔽</h4>
+		
+		<canvas id="c" width="2048" height="2048"></canvas>
+
+		<br>
+		<button id="save">Download Image</button>
+		<br><br>
+		<div class="title" id="rarityCount">Rarity: 0</div>
+		<input type="range" name="Rarity" id="rarity" value="0" step="1" min="0" max="10">
+		<br><br>
+		<div class="title">Add Image</div>
+		<input type="file" id="filePick" accept="image/png, image/jpeg">
+		<br><br>
+		<div id="uploadErr"></div>
+	</center>
+</body>
+</html>
