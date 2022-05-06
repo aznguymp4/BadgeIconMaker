@@ -21,6 +21,9 @@ const rarityInput = document.getElementById('rarity')
 const rarityCount = document.getElementById('rarityCount')
 const uploadErr = document.getElementById('uploadErr')
 let rarity = 0
+ctx.fillStyle = '#fff'
+ctx.font = '120px Arial'
+ctx.textAlign = 'center'
 
 filePick.addEventListener('change', render)
 
@@ -86,6 +89,7 @@ function render() {
 	}
 	
 	ctx.clearRect(0,0,w,h)
+	ctx.fillText('Loading background image...',1024,1024)
 	let bg = new Image()
 	bg.crossOrigin = 'anonymous'
 	bg.onload=()=>{
