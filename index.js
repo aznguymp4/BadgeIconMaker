@@ -16,7 +16,6 @@ const ctx = cvs.getContext('2d')
 const [w,h,padding] = [cvs.width,cvs.height,359]
 const [WP,HP] = [w-(padding*2),h-(padding*2)]
 const filePick = document.getElementById('filePick')
-const saveBtn = document.getElementById('save')
 const rarityInput = document.getElementById('rarity')
 const rarityCount = document.getElementById('rarityCount')
 const uploadErr = document.getElementById('uploadErr')
@@ -41,15 +40,6 @@ rarityInput.addEventListener('change', ()=>{
 })
 rarityInput.addEventListener('input', ()=>{
 	rarityCount.innerText = `Rarity: ${rarityInput.value}`
-})
-saveBtn.addEventListener('click',()=>{
-	let link = document.createElement('a')
-	link.download = 'BadgeIcon.png'
-	link.href = cvs.toDataURL()
-	document.body.appendChild(link)
-	link.click()
-	document.body.removeChild(link)
-	delete link
 })
 
 function render() {
