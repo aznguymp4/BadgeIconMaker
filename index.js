@@ -20,12 +20,20 @@ const saveBtn = document.getElementById('save')
 const rarityInput = document.getElementById('rarity')
 const rarityCount = document.getElementById('rarityCount')
 const uploadErr = document.getElementById('uploadErr')
+const urlInput = document.getElementById('imageURL')
 let rarity = 0
 ctx.fillStyle = '#fff'
 ctx.font = '120px Arial'
 ctx.textAlign = 'center'
 
-filePick.addEventListener('change', render)
+filePick.addEventListener('change', ()=>{
+	urlInput.value = ''
+	render()
+})
+urlInput.addEventListener('change', ()=>{
+	filePick.value = ''
+	render()
+})
 
 rarityInput.addEventListener('change', ()=>{
 	rarity = rarityInput.value
@@ -46,6 +54,40 @@ saveBtn.addEventListener('click',()=>{
 
 function render() {
 	let bgDrawn = false
+
+	function check(src) {
+		if(!src) return
+		if(!bgDrawn) {
+			window.setTimeout(()=>{check(src)}, 100) // make sure the background is drawn first before drawing the item
+		} else {
+			let uploaded = new Image()
+			uploaded.onload=()=>{
+				let [width,height,wMult,hMult] = [0,0,1,1]
+				
+				if(uploaded.width>uploaded.height) {
+					let ratio = uploaded.width/uploaded.height
+					wMult = WP / uploaded.width
+					width = Math.min(uploaded.width * wMult, WP)
+					height = Math.min((width/ratio) * hMult, HP)
+				} else {
+					let ratio = uploaded.height/uploaded.width
+					hMult = HP / uploaded.height
+					height = Math.min(uploaded.height * hMult, WP)
+					width = Math.min((height/ratio) * wMult, HP)
+				}
+				
+				
+				ctx.shadowBlur = 120
+				ctx.shadowOffsetX = 30
+				ctx.shadowOffsetY = 30
+				ctx.shadowColor = '#000000AA'
+				ctx.drawImage(uploaded,(w/2)-(width/2),(h/2)-(height/2),width,height)
+			}
+			uploaded.src = src
+		}
+	}
+	check(urlInput.value)
+
 	let file = filePick.files[0]
 	if(file) {
 		if(!['image/png','image/jpeg'].includes(file.type)) return uploadErr.innerHTML = '<strong>File must be .png, .jpg, or .jpeg!</strong>'
@@ -54,37 +96,7 @@ function render() {
 		let reader = new FileReader()
 		reader.readAsDataURL(file)
 		reader.onloadend=e=>{
-			function check() {
-				if(!bgDrawn) {
-					window.setTimeout(check, 100) // make sure the background is drawn first before drawing the item
-				} else {
-					let uploaded = new Image()
-					uploaded.onload=()=>{
-						let [width,height,wMult,hMult] = [0,0,1,1]
-						
-						if(uploaded.width>uploaded.height) {
-							let ratio = uploaded.width/uploaded.height
-							wMult = WP / uploaded.width
-							width = Math.min(uploaded.width * wMult, WP)
-							height = Math.min((width/ratio) * hMult, HP)
-						} else {
-							let ratio = uploaded.height/uploaded.width
-							hMult = HP / uploaded.height
-							height = Math.min(uploaded.height * hMult, WP)
-							width = Math.min((height/ratio) * wMult, HP)
-						}
-						
-						
-						ctx.shadowBlur = 120
-						ctx.shadowOffsetX = 30
-						ctx.shadowOffsetY = 30
-						ctx.shadowColor = '#000000AA'
-						ctx.drawImage(uploaded,(w/2)-(width/2),(h/2)-(height/2),width,height)
-					}
-					uploaded.src = e.target.result
-				}
-			}
-			check()
+			check(e.target.result)
 		}
 	}
 	
