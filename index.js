@@ -15,6 +15,7 @@ const cvs = document.getElementById('c')
 const ctx = cvs.getContext('2d')
 const [w,h,padding] = [cvs.width,cvs.height,359]
 const [WP,HP] = [w-(padding*2),h-(padding*2)]
+const imgCvs = document.getElementById('imgCvs')
 const filePick = document.getElementById('filePick')
 const rarityInput = document.getElementById('rarity')
 const rarityCount = document.getElementById('rarityCount')
@@ -31,6 +32,7 @@ filePick.addEventListener('change', ()=>{
 })
 urlInput.addEventListener('change', ()=>{
 	filePick.value = ''
+	urlInput.value = replaceCdn(urlInput.value)
 	render()
 })
 
@@ -42,6 +44,10 @@ rarityInput.addEventListener('input', ()=>{
 	rarityCount.innerText = `Rarity: ${rarityInput.value}`
 })
 
+function replaceCdn(txt) {
+	return txt.replace('cdn.discordapp.com','media.discordapp.net')
+}
+
 function render() {
 	let bgDrawn = false
 
@@ -51,6 +57,7 @@ function render() {
 			window.setTimeout(()=>{check(src)}, 100) // make sure the background is drawn first before drawing the item
 		} else {
 			let uploaded = new Image()
+			uploaded.crossOrigin = 'anonymous'
 			uploaded.onload=()=>{
 				let [width,height,wMult,hMult] = [0,0,1,1]
 				
@@ -66,12 +73,12 @@ function render() {
 					width = Math.min((height/ratio) * wMult, HP)
 				}
 				
-				
 				ctx.shadowBlur = 120
 				ctx.shadowOffsetX = 30
 				ctx.shadowOffsetY = 30
 				ctx.shadowColor = '#000000AA'
 				ctx.drawImage(uploaded,(w/2)-(width/2),(h/2)-(height/2),width,height)
+				imgCvs.src = cvs.toDataURL()
 			}
 			uploaded.src = src
 		}
@@ -92,10 +99,12 @@ function render() {
 	
 	ctx.clearRect(0,0,w,h)
 	ctx.fillText('Loading background image...',1024,1024)
+	imgCvs.src = cvs.toDataURL()
 	let bg = new Image()
 	bg.crossOrigin = 'anonymous'
 	bg.onload=()=>{
 		ctx.drawImage(bg,0,0)
+		imgCvs.src = cvs.toDataURL()
 		bgDrawn = true
 	}
 	bg.src = BGs[rarity]

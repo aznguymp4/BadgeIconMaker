@@ -5,11 +5,7 @@ body {
 }
 
 canvas {
-	background-color: #444;
-	width: 80%;
-	height: 80%;
-	max-width: 360px;
-	max-height: 360px;
+	display: none;
 }
 
 .title {
@@ -21,7 +17,20 @@ canvas {
 	color: #ED4245;
 }
 
+#imageURL {
+	width: 80%;
+	max-width: 360px;
+}
+
 #rarity {
 	width: 80%;
 	max-width: 250px;
+}
+
+#imgCvs {
+	background-color: #444;
+	width: 80%;
+	height: 80%;
+	max-width: 360px;
+	max-height: 360px;
 }
