@@ -59,17 +59,23 @@ function render() {
 			let uploaded = new Image()
 			uploaded.crossOrigin = 'anonymous'
 			uploaded.onload=()=>{
+				let trim = document.createElement('canvas')
+				let trimC = trim.getContext('2d')
+				trim.width = uploaded.width
+				trim.height = uploaded.height
+				trimC.drawImage(uploaded,0,0)
+				let final = trimCanvas(trim)
 				let [width,height,wMult,hMult] = [0,0,1,1]
 				
-				if(uploaded.width>uploaded.height) {
-					let ratio = uploaded.width/uploaded.height
-					wMult = WP / uploaded.width
-					width = Math.min(uploaded.width * wMult, WP)
+				if(final.width>final.height) {
+					let ratio = final.width/final.height
+					wMult = WP / final.width
+					width = Math.min(final.width * wMult, WP)
 					height = Math.min((width/ratio) * hMult, HP)
 				} else {
-					let ratio = uploaded.height/uploaded.width
-					hMult = HP / uploaded.height
-					height = Math.min(uploaded.height * hMult, WP)
+					let ratio = final.height/final.width
+					hMult = HP / final.height
+					height = Math.min(final.height * hMult, WP)
 					width = Math.min((height/ratio) * wMult, HP)
 				}
 				
@@ -77,7 +83,9 @@ function render() {
 				ctx.shadowOffsetX = 30
 				ctx.shadowOffsetY = 30
 				ctx.shadowColor = '#000000AA'
-				ctx.drawImage(uploaded,(w/2)-(width/2),(h/2)-(height/2),width,height)
+
+
+				ctx.drawImage(final,(w/2)-(width/2),(h/2)-(height/2),width,height)
 				imgCvs.src = cvs.toDataURL()
 			}
 			uploaded.src = src
@@ -109,3 +117,61 @@ function render() {
 	}
 	bg.src = BGs[rarity]
 } render()
+
+function trimCanvas(c) {
+	let ctx = c.getContext('2d'),
+		copy = document.createElement('canvas').getContext('2d'),
+		pixels = ctx.getImageData(0, 0, c.width, c.height),
+		l = pixels.data.length,
+		i,
+		bound = {
+			top: null,
+			left: null,
+			right: null,
+			bottom: null
+		},
+		x, y;
+	
+	// Iterate over every pixel to find the highest
+	// and where it ends on every axis ()
+	for (i = 0; i < l; i += 4) {
+		if (pixels.data[i + 3] !== 0) {
+			x = (i / 4) % c.width;
+			y = ~~((i / 4) / c.width);
+
+			if (bound.top === null) {
+				bound.top = y;
+			}
+
+			if (bound.left === null) {
+				bound.left = x;
+			} else if (x < bound.left) {
+				bound.left = x;
+			}
+
+			if (bound.right === null) {
+				bound.right = x;
+			} else if (bound.right < x) {
+				bound.right = x;
+			}
+
+			if (bound.bottom === null) {
+				bound.bottom = y;
+			} else if (bound.bottom < y) {
+				bound.bottom = y;
+			}
+		}
+	}
+	
+	// Calculate the height and width of the content
+	let trimHeight = bound.bottom - bound.top,
+		trimWidth = bound.right - bound.left,
+		trimmed = ctx.getImageData(bound.left, bound.top, trimWidth, trimHeight);
+
+	copy.canvas.width = trimWidth;
+	copy.canvas.height = trimHeight;
+	copy.putImageData(trimmed, 0, 0);
+
+	// Return trimmed canvas
+	return copy.canvas;
+}
