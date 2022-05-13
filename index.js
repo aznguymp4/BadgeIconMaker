@@ -9,7 +9,8 @@ const BGs = [
 	'https://media.discordapp.net/attachments/558759865552732190/971972857779351582/7.png',
 	'https://media.discordapp.net/attachments/558759865552732190/971972858093907988/8.png',
 	'https://media.discordapp.net/attachments/558759865552732190/971972858559471696/9.png',
-	'https://media.discordapp.net/attachments/558759865552732190/971972859050217522/10.png'
+	'https://media.discordapp.net/attachments/558759865552732190/974792200082825216/10.png'
+	//'https://media.discordapp.net/attachments/558759865552732190/971972859050217522/10.png' // old
 ]
 const cvs = document.getElementById('c')
 const ctx = cvs.getContext('2d')
