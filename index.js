@@ -1,17 +1,3 @@
-const BGs = [
-	'https://media.discordapp.net/attachments/558759865552732190/971972817891496016/0.png',
-	'https://media.discordapp.net/attachments/558759865552732190/971972855665410119/1.png',
-	'https://media.discordapp.net/attachments/558759865552732190/971972855958999070/2.png',
-	'https://media.discordapp.net/attachments/558759865552732190/971972856273567774/3.png',
-	'https://media.discordapp.net/attachments/558759865552732190/971972856542015538/4.png',
-	'https://media.discordapp.net/attachments/558759865552732190/971972857116631080/5.png',
-	'https://media.discordapp.net/attachments/558759865552732190/971972857439600731/6.png',
-	'https://media.discordapp.net/attachments/558759865552732190/971972857779351582/7.png',
-	'https://media.discordapp.net/attachments/558759865552732190/971972858093907988/8.png',
-	'https://media.discordapp.net/attachments/558759865552732190/971972858559471696/9.png',
-	'https://media.discordapp.net/attachments/558759865552732190/974792200082825216/10.png'
-	//'https://media.discordapp.net/attachments/558759865552732190/971972859050217522/10.png' // old
-]
 const cvs = document.getElementById('c')
 const ctx = cvs.getContext('2d')
 const [w,h,padding] = [cvs.width,cvs.height,359]
@@ -116,7 +102,7 @@ function render() {
 		imgCvs.src = cvs.toDataURL()
 		bgDrawn = true
 	}
-	bg.src = BGs[rarity]
+	bg.src = `/bgs/${rarity}.png`
 } render()
 
 function trimCanvas(c) {
